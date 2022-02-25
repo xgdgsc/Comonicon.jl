@@ -263,7 +263,7 @@ function split_leaf_command(fn::JLFunction)
                 Comonicon,
                 :JLArgument;
                 name = QuoteNode(each.args[1]),
-                type = wrap_type(fn, each.args[2])
+                type = wrap_type(fn, each.args[2]),
             )
         elseif is_vararg_with_type(each) # :($name::$type...)
             name = each.args[1].args[1]
@@ -274,7 +274,7 @@ function split_leaf_command(fn::JLFunction)
                 name = QuoteNode(name),
                 type = wrap_type(fn, type),
                 require = false,
-                vararg = true
+                vararg = true,
             )
         elseif is_optional_argument_with_type(each) # Expr(:kw, :($name::$type), value)
             name = each.args[1].args[1]
@@ -286,7 +286,7 @@ function split_leaf_command(fn::JLFunction)
                 name = QuoteNode(name),
                 type = wrap_type(fn, type),
                 require = false,
-                default = string(value)
+                default = string(value),
             )
         elseif Meta.isexpr(each, :...) # :($name...)
             xcall(Comonicon, :JLArgument; name = QuoteNode(each.args[1]), require = false, vararg = true)
@@ -296,7 +296,7 @@ function split_leaf_command(fn::JLFunction)
                 :JLArgument;
                 name = QuoteNode(each.args[1]),
                 require = false,
-                default = string(each.args[2])
+                default = string(each.args[2]),
             )
         else
             throw(Meta.ParseError("invalid syntax: $each"))
@@ -381,7 +381,7 @@ function codegen_create_entry(m::Module, line, @nospecialize(ex))
         configs.command.width,
         configs.command.color,
         configs.command.static,
-        configs.command.dash
+        configs.command.dash,
     )
     quote
         $(codegen_entry_cmd(m::Module, line, cmd, configs, ex))
@@ -562,7 +562,7 @@ function cast_flags(doc::JLMD, flags::Vector{JLFlag}, line)
                     name = name,
                     short = doc_flag.short,
                     description = Description(doc_flag.desc),
-                    line = line
+                    line = line,
                 )
 
             if doc_flag.short
@@ -589,7 +589,7 @@ function cast_options(doc::JLMD, options::Vector{JLOption}, line)
                     type = each.type,
                     short = option.short,
                     description = option.desc,
-                    line = line
+                    line = line,
                 )
 
             if option.short
@@ -601,7 +601,7 @@ function cast_options(doc::JLMD, options::Vector{JLOption}, line)
                 name = name,
                 hint = each.hint,
                 type = each.type,
-                line = line
+                line = line,
             )
         end
     end
